@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 
 const imagesRoute = require('./routes/image');
 const videosRoute = require('./routes/video');
+const blogRoute = require('./routes/blog')
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ mongoose.connect(mongoURI).then(() => {
   // Routes pour les images et vidéos
   app.use('/images', imagesRoute);
   app.use('/videos', videosRoute);
+  app.use('/blog', blogRoute);
   
 
 app.post('/contact', async (req, res) => {
