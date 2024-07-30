@@ -40,8 +40,9 @@ export default {
     sortedItems() {
       return [...this.images.map(img => ({...img, type: 'image'})), 
               ...this.videos.map(vid => ({...vid, type: 'video'}))]
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     }
+
   },
   async fetch() {
     try {
