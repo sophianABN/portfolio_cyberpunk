@@ -7,14 +7,14 @@ const upload = require('../middleware/upload');
 
 // Cette route reste protégée
 router.post('/add', checkJwt, upload.single('image'), async (req, res) => {
-  const blogArticle = new Blog({
-    title: req.body.title,
-    content: req.body.content,
-    author: req.auth.name,
-    image: req.file.location,
-  });
-
   try {
+    const blogArticle = new Blog({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.auth.name,
+      image: req.file ? req.file.location : null, // Vérification de l'existence du fichier
+    });
+
     await blogArticle.save();
     res.json({ message: 'L\'article a été ajouté avec succès' });
   } catch (error) {
