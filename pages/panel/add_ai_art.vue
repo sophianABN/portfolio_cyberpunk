@@ -63,34 +63,12 @@
       {{ message }}
     </div>
 
-    <div class="flex justify-center">
-    <form @submit.prevent="addBlogArticle" class="w-full max-w-md p-4 bg-white rounded-lg shadow-md">
-      <div class="mb-4">
-        <label for="blogTitle" class="block text-sm font-medium text-gray-700">Titre de l'article</label>
-        <input type="text" id="blogTitle" v-model="newBlogArticle.title" placeholder="Entrez le titre de l'article"
-               class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-      </div>
-      <div class="mb-4">
-        <label for="blogContent" class="block text-sm font-medium text-gray-700">Contenu de l'article</label>
-        <textarea id="blogContent" v-model="newBlogArticle.content" placeholder="Entrez le contenu de l'article"
-                  class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-      </div>
-      <div class="mb-4">
-        <label for="blogImageInput" class="block text-sm font-medium text-gray-700">Upload image</label>
-        <input type="file" id="blogImageInput" ref="imageLocalInput" accept="image/*"
-               class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-      </div>
-      <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
-        Ajouter l'article
-      </button>
-    </form>
-  </div>
-
   </div>
 </template>
 
 <script>
 export default {
+  layout: 'panel',
   auth: true,
 
 
@@ -100,11 +78,6 @@ export default {
       videoTitle: '',
       message: '',
       messageClass: '',
-      newBlogArticle: {
-        title: '',
-        content: '',
-        image: '',
-      }
     }
   },
 
@@ -151,19 +124,6 @@ export default {
       }
     },
 
-    async addBlogArticle() {
-      const formData = new FormData()
-      formData.append('title', this.newBlogArticle.title)
-      formData.append('content', this.newBlogArticle.content)
-      formData.append('image', this.$refs.imageLocalInput.files[0])
-      try {
-        const response = await this.$axios.post('/api/blog/add', formData);
-        console.log('L\'article a été ajouté avec succès:', response.data);
-        this.newBlogArticle = { title: '', content: '', image: '' }; 
-      } catch (error) {
-        console.error('Erreur lors de l\'ajout de l\'article:', error);
-      }
-    },
 
     showMessage(msg, type) {
       this.message = msg
