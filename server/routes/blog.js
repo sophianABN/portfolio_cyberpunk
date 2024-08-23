@@ -5,6 +5,7 @@ const Blog = require('../models/Blog')
 const checkJwt = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
+// Cette route reste protégée
 router.post('/add', checkJwt, upload.single('image'), async (req, res) => {
   const blogArticle = new Blog({
     title: req.body.title,
@@ -22,6 +23,7 @@ router.post('/add', checkJwt, upload.single('image'), async (req, res) => {
   }
 });
 
+// Ces routes sont maintenant accessibles à tous
 router.get('/', async (req, res) => {
   try {
     const blogArticles = await Blog.find().sort({ createdAt: -1 })

@@ -8,9 +8,16 @@
   </template>
   
   <script>
-  import showdown from 'showdown'
+  import showdown from 'showdown';
+  import axios from 'axios';
+
   
   export default {
+
+    auth: false,
+    fetchOnServer: false,
+
+    
     data() {
       return {
         article: null,
@@ -18,7 +25,9 @@
       }
     },
     async fetch() {
-      this.article = await this.$axios.$get(`/api/blog/${this.$route.params.id}`)
+      let data = await axios.get(`/api/blog/${this.$route.params.id}`)
+      this.article = data.data;
+      
     },
     computed: {
       renderedContent() {

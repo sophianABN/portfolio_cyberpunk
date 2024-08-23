@@ -84,6 +84,9 @@ export default {
 }
 .feed-item {
   @apply bg-white rounded-lg shadow-md overflow-hidden;
+  width: 80%; /* Réduit la largeur à 80% de la largeur du conteneur */
+  margin-left: auto;
+  margin-right: auto;
 }
 .image-container, .video-container {
   @apply w-full h-0 pb-[100%] relative;
@@ -92,4 +95,10 @@ export default {
   @apply absolute top-0 left-0 w-full h-full object-cover;
 }
 
+/* Media query pour ajuster la taille sur les grands écrans si nécessaire */
+@media (min-width: 1024px) {
+  .feed-item {
+    width: 70%; 
+  }
+}
 </style>
