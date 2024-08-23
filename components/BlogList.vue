@@ -40,10 +40,12 @@ export default {
   },
   methods: {
     truncateContent(content, charCount) {
-      if (content.length > charCount) {
-        return content.slice(0, charCount) + '...'
+      // Supprimer les balises HTML
+      let plainText = content.replace(/<[^>]+>/g, '');
+      if (plainText.length > charCount) {
+        return plainText.slice(0, charCount) + '...';
       }
-      return content
+      return plainText;
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
