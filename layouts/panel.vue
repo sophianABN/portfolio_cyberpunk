@@ -22,7 +22,7 @@
           <li class="mb-2">
             <NuxtLink 
               to="/panel" 
-              class="block py-2 px-4 rounded transition-colors duration-200"
+              class="block py-2 px-4 rounded transition-colors duration-200 hover:text-yellow-300"
               :class="{ 'text-yellow-300': $route.path === '/panel' }"
               @click="closeSidebarOnMobile"
             >
@@ -31,18 +31,28 @@
           </li>
           <li class="mb-2">
             <NuxtLink 
+              to="/panel/manage_articles" 
+              class="block py-2 px-4 rounded transition-colors duration-200 hover:text-yellow-300"
+              :class="{ 'text-yellow-300': $route.path.startsWith('/panel/manage_articles') }"
+              @click="closeSidebarOnMobile"
+            >
+              Gestion Articles
+            </NuxtLink>
+          </li>
+          <li class="mb-2">
+            <NuxtLink 
               to="/panel/add_article" 
-              class="block py-2 px-4 rounded transition-colors duration-200"
+              class="block py-2 px-4 rounded transition-colors duration-200 hover:text-yellow-300"
               :class="{ 'text-yellow-300': $route.path.startsWith('/panel/add_article') }"
               @click="closeSidebarOnMobile"
             >
-              Articles
+              Ajouter Article
             </NuxtLink>
           </li>
           <li class="mb-2">
             <NuxtLink 
               to="/panel/add_ai_art" 
-              class="block py-2 px-4 rounded transition-colors duration-200"
+              class="block py-2 px-4 rounded transition-colors duration-200 hover:text-yellow-300"
               :class="{ 'text-yellow-300': $route.path.startsWith('/panel/add_ai_art') }"
               @click="closeSidebarOnMobile"
             >

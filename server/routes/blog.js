@@ -26,7 +26,7 @@ router.post('/add', checkJwt, upload.single('image'), async (req, res) => {
 // Ces routes sont maintenant accessibles à tous
 router.get('/', async (req, res) => {
   try {
-    const blogArticles = await Blog.find().sort({ createdAt: -1 })
+    const blogArticles = await Blog.find().sort({ updatedAt: -1 })
     res.json(blogArticles)
   } catch (error) {
     console.error('Erreur lors de la récupération des articles:', error)
@@ -50,5 +50,39 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération de l\'article' });
   }
 });
+
+// Route pour mettre à jour un article
+router.put('/:id', checkJwt, upload.single('image'), async (req, res) => {
+  try {
+    const updateData = {
+      title: req.body.title,
+      content: req.body.content
+    }
+    if (req.file) {
+      updateData.image = req.file.location
+    }
+    const updatedArticle = await Blog.findOneAndUpdate(
+      { _id: req.params.id },
+      updateData,
+      { new: true }
+    )
+    res.json(updatedArticle)
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de l\'article:', error)
+    res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'article' })
+  }
+})
+
+// Route pour supprimer un article
+router.delete('/:id', checkJwt, async (req, res) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id)
+    res.json({ message: 'Article supprimé avec succès' })
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l\'article:', error)
+    res.status(500).json({ message: 'Erreur lors de la suppression de l\'article' })
+  }
+})
+
 
 module.exports = router

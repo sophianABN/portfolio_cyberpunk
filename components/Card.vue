@@ -7,11 +7,16 @@
       <h3 class="cyber-h pl-2 text-sm md:text-base lg:text-lg font-bold leading-tight">{{ title }}</h3>
     </div>
     <div class="card-content pl-2 mb-4 text-sm md:text-base flex-grow overflow-hidden">
-      <div class="line-clamp-3" v-html="content"></div>
+      <p class="line-clamp-3" v-html="content"></p>
     </div>
-    <div class="card-footer mt-auto flex justify-between items-center">
-      <span class="text-xs pl-2 text-gray-500">{{ date }}</span>
-      <div>
+    <div class="card-footer mt-auto flex flex-col items-start">
+      <span class="text-xs pl-2 text-gray-500">
+        Publié le {{ createdDate }}
+      </span>
+      <span v-if="updatedDate && updatedDate !== createdDate" class="text-xs pl-2 text-blue-500 mt-1">
+        Mis à jour le {{ updatedDate }}
+      </span>
+      <div class="mt-2 self-end">
         <a :href="link" class="cyber-button-small cyber-button-smaller bg-purple fg-white md:ml-2">
           <span class="glitchtext">Lire la suite</span>{{ linkText }}
         </a>
@@ -28,7 +33,8 @@ export default {
     link: String,
     linkText: String,
     image: String,
-    date: String
+    createdDate: String,
+    updatedDate: String
   }
 };
 </script>

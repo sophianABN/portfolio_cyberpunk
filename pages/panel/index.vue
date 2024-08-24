@@ -36,13 +36,16 @@
   
       <!-- Manage Articles -->
       <div>
-        <h3 class="font-bold mb-4">Manage Articles</h3>
-        <div class="flex space-x-4">
-          <button class="bg-blue-500 text-white px-4 py-2 rounded">New Article</button>
-          <button class="bg-green-500 text-white px-4 py-2 rounded">Edit Article</button>
-          <button class="bg-red-500 text-white px-4 py-2 rounded">Delete Article</button>
-        </div>
-      </div>
+    <h3 class="font-bold mb-4">Manage Articles</h3>
+    <div class="flex space-x-4">
+      <NuxtLink to="/panel/add_article" class="bg-blue-500 text-white px-4 py-2 rounded">
+        Add Article
+      </NuxtLink>
+      <NuxtLink to="/panel/manage_articles" class="bg-green-500 text-white px-4 py-2 rounded">
+        Manage Article
+      </NuxtLink>
+    </div>
+  </div>
     </div>
   </template>
   

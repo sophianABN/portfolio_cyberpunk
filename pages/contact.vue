@@ -35,11 +35,8 @@
                     <a href="https://www.instagram.com/lakhtiste_ai" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://twitter.com/Lakhtiste_ai" target="_blank" rel="noopener noreferrer">
+                    <a href="https://x.com/Lakhtiste_ai" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="https://github.com/Lakhtiste" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i>
                     </a>
                     <a href="https://discord.gg/Pmx8QssjMY" target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-discord"></i>

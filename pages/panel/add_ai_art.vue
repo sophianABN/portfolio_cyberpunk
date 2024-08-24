@@ -1,9 +1,9 @@
 <template>
   <div class="admin-page container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Panel d'administration</h1>
+    <h1 class="text-3xl font-bold mb-6">Ajouter AI Art </h1>
 
     <div v-if="$auth.loggedIn">
-      <p class="mb-4">Bienvenue, {{ $auth.user.name }} !</p>
+      <p class="text-3xl font-bold mb-4">Bienvenue, {{ $auth.user.name }} !</p>
 
       <div class="mb-8 bg-white shadow-md rounded-lg p-6">
         <h2 class="text-2xl font-semibold mb-4">Upload d'image</h2>
@@ -44,11 +44,6 @@
           </button>
         </form>
       </div>
-
-      <button @click="logout"
-        class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
-        Déconnexion
-      </button>
     </div>
 
     <div v-else>
@@ -137,15 +132,6 @@ export default {
     login() {
       this.$auth.loginWith('authentik')
     },
-
-    async logout() {
-      try {
-        await this.$auth.logout()
-        this.$router.push('/')
-      } catch (error) {
-        console.error('Erreur lors de la déconnexion:', error)
-      }
-    }
   }
 }
 </script>

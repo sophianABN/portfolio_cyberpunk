@@ -1,17 +1,9 @@
 <template>
     <div class="admin-page container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-6">Ajouter un article au Blog</h1>
+      <h1 class="text-3xl font-bold mb-6">Modifier l'article</h1>
   
       <div v-if="$auth.loggedIn">
         <p class="text-3xl font-bold mb-4">Bienvenue, {{ $auth.user.name }} !</p>
-      </div>
-  
-      <div v-else>
-        <p>Vous devez être connecté pour accéder à cette page.</p>
-        <button @click="login"
-          class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
-          Se connecter avec Google
-        </button>
       </div>
   
       <div v-if="message" :class="['mt-4 p-4 rounded', messageClass]">
@@ -19,10 +11,10 @@
       </div>
   
       <div class="flex justify-center mt-8">
-        <form @submit.prevent="addBlogArticle" class="w-full max-w-4xl p-4 bg-white rounded-lg shadow-md">
+        <form @submit.prevent="updateArticle" class="w-full max-w-4xl p-4 bg-white rounded-lg shadow-md">
           <div class="mb-4">
             <label for="blogTitle" class="block text-sm font-medium text-gray-700">Titre de l'article</label>
-            <input type="text" id="blogTitle" v-model="newBlogArticle.title" placeholder="Entrez le titre de l'article"
+            <input type="text" id="blogTitle" v-model="article.title" placeholder="Entrez le titre de l'article"
               class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
           </div>
           <div class="mb-4">
@@ -61,11 +53,11 @@
           </div>
           <div class="mb-4">
             <label for="blogImageInput" class="block text-sm font-medium text-gray-700">Upload image</label>
-            <input type="file" id="blogImageInput" ref="imageLocalInput" accept="image/*"
+            <input type="file" id="blogImageInput" ref="imageInput" accept="image/*"
               class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
           </div>
           <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
-            Ajouter l'article
+            Mettre à jour l'article
           </button>
         </form>
       </div>
@@ -89,11 +81,20 @@
         editor: null,
         message: '',
         messageClass: '',
-        newBlogArticle: {
+        article: {
           title: '',
           content: '',
-          image: '',
+          image: ''
         }
+      }
+    },
+  
+    async fetch() {
+      try {
+        const { data } = await this.$axios.get(`/api/blog/${this.$route.params.id}`)
+        this.article = data
+      } catch (error) {
+        console.error('Erreur lors de la récupération de l\'article:', error)
       }
     },
   
@@ -112,40 +113,35 @@
     methods: {
       initEditor() {
         this.editor = new Editor({
-          content: '',
+          content: this.article.content,
           extensions: [
             StarterKit,
           ],
           onUpdate: ({ editor }) => {
-            this.newBlogArticle.content = editor.getHTML()
+            this.article.content = editor.getHTML()
           },
         })
       },
   
-      async addBlogArticle() {
-        if (!this.newBlogArticle.title || !this.newBlogArticle.content) {
+      async updateArticle() {
+        if (!this.article.title || !this.article.content) {
           this.showMessage('Le titre et le contenu sont requis', 'error')
           return
         }
   
         const formData = new FormData()
-        formData.append('title', this.newBlogArticle.title)
-        formData.append('content', this.newBlogArticle.content)
-        if (this.$refs.imageLocalInput.files[0]) {
-          formData.append('image', this.$refs.imageLocalInput.files[0])
+        formData.append('title', this.article.title)
+        formData.append('content', this.article.content)
+        if (this.$refs.imageInput.files[0]) {
+          formData.append('image', this.$refs.imageInput.files[0])
         }
         try {
-          const response = await this.$axios.post('/api/blog/add', formData);
-          console.log('L\'article a été ajouté avec succès:', response.data);
-          this.newBlogArticle = { title: '', content: '', image: '' };
-          if (this.editor) {
-            this.editor.commands.setContent('');
-          }
-          this.$refs.imageLocalInput.value = '';
-          this.showMessage('Article ajouté avec succès', 'success');
+          await this.$axios.put(`/api/blog/${this.$route.params.id}`, formData)
+          this.showMessage('Article mis à jour avec succès', 'success')
+          this.$router.push('/panel/manage_articles')
         } catch (error) {
-          console.error('Erreur lors de l\'ajout de l\'article:', error);
-          this.showMessage('Erreur lors de l\'ajout de l\'article', 'error');
+          console.error('Erreur lors de la mise à jour de l\'article:', error)
+          this.showMessage('Erreur lors de la mise à jour de l\'article', 'error')
         }
       },
   
@@ -157,12 +153,6 @@
           this.messageClass = ''
         }, 3000)
       },
-  
-      login() {
-        this.$auth.loginWith('authentik')
-      },
-  
-
   
       // Méthodes pour les commandes de l'éditeur Tiptap
       toggleBold() {

@@ -7,6 +7,13 @@ const BlogSchema = new Schema({
   author: { type: String, required: true },
   image: { type: String },
   createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+// Middleware pour mettre à jour automatiquement updatedAt
+BlogSchema.pre('findOneAndUpdate', function(next) {
+  this.set({ updatedAt: new Date() });
+  next();
 });
 
 module.exports = mongoose.model('Blog', BlogSchema);
